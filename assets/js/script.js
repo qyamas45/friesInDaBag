@@ -1,5 +1,6 @@
 import { Bag } from '../../objects/Bag.js';
 import { Cursor } from '../../objects/Cursor.js';
+import { Fry } from '../../objects/Fry.js'
 let bag;
 
 const cursor = new Cursor();
@@ -21,27 +22,34 @@ resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
  
 function createFry(fryx=0, fryy=0, width=10, height=50, color="#FFD700"){
-    ctx.fillStyle = color;
-    const fry = {
-        x: Math.random() * (canvas.width - 100),
-        y: Math.random() * (canvas.height - 60),
-        width: width,
-        height: height,
-        color: color
-    };
-    fries.push(fry);
-    animate();
+   const x = Math.random() * (canvas.width - 100);
+   const y = Math.random() * (canvas.height - 100);
+   const fry = new Fry(x,y);
+   fries.push(fry);
 }
 
-
+function spawnFriesTimer(max, interval)
+{
+    let spawnCount = 0;
+    const timer = setInterval(() => {
+        if(spawnCount >= max)
+        {
+            clearInterval(timer);
+        } else
+        {
+            createFry();
+            spawnCount++;
+        }
+    }, interval);
+    
+}
 function animate(){
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     bag.draw(ctx);
-    for(const rect of fries)
+    for(const fry of fries)
     {
-        ctx.fillStyle = rect.color;
-        ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+        fry.draw(ctx);
     }
     
     cursor.draw(ctx);
@@ -62,17 +70,8 @@ canvas.addEventListener("mousemove", (event) => {
     cursor.updatePosition(event.clientX, event.clientY);
 
 });
-let spawnCount = 0;
-const maxSpawns = 10;
-const spawnInt = setInterval(() => {
-    if(spawnCount >= maxSpawns)
-    {
-        clearInterval(spawnInt);
-    } else
-    {
-        createFry();
-        spawnCount++;
-    }
-}, 100000);
+
+
+spawnFriesTimer(10, 10000);
+
 animate();
- 
