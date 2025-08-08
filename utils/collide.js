@@ -1,4 +1,4 @@
-function isColliding(rect1, rect2)
+export function collide(rect1, rect2)
 {
     return (
         rect1.x < rect2.x + rect2.width &&

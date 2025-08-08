@@ -1,5 +1,5 @@
 export class Cursor {
-    constructor(size = 50, color = 'blue') {
+    constructor(size =8, color = 'black') {
         this.x = 0;
         this.y = 0;
         this.size = size;
@@ -15,7 +15,7 @@ export class Cursor {
         ctx.fillStyle = this.color;
         ctx.fillRect(
             this.x - this.size / 2,
-            this.y - this.size / 2,
+            this.y - (this.size / 2) -4,
             this.size,
             this.size
         );
